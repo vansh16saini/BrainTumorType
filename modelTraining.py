@@ -41,6 +41,10 @@ validation_generator = datagen.flow_from_directory(
 
 # Load Pretrained ResNet50 Model
 base_model = ResNet50(weights="imagenet", include_top=False, input_shape=(128, 128, 3))
+base_model.trainable = True
+for layer in base_model.layers[:-10]:  # Freeze all but last 10 layers
+    layer.trainable = False
+
 
 # Modify the Model for Multi-Class Classification
 x = GlobalAveragePooling2D()(base_model.output)
